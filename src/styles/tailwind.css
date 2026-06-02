@@ -154,6 +154,40 @@
   --neutral-900: var(--primitive-neutral-900);
 }
 
+/* _________________________________________________________(NY KODE)______________________________________________________________________ */
+/* =========================================================
+   DARK TEMA
+   ========================================================= */
+
+[data-theme="dark"] {
+  --main-100: var(--primitive-accent-500);
+  --main-200: var(--primitive-accent-400);
+  --main-300: var(--primitive-accent-300);
+  --main-400: var(--primitive-accent-200);
+  --main-500: var(--primitive-accent-100);
+
+  --accent-100: var(--primitive-main-500);
+  --accent-200: var(--primitive-main-400);
+  --accent-300: var(--primitive-main-300);
+  --accent-400: var(--primitive-main-200);
+  --accent-500: var(--primitive-main-100);
+
+  --neutral-100: var(--primitive-neutral-500);
+  --neutral-200: var(--primitive-neutral-400);
+  --neutral-300: var(--primitive-neutral-300);
+  --neutral-400: var(--primitive-neutral-200);
+  --neutral-500: var(--primitive-neutral-100);
+
+  --neutral-0: var(--primitive-neutral-900);
+  --neutral-900: var(--primitive-neutral-0);
+
+  --section-bg-1: var(--main-200);
+  --section-bg-2: var(--accent-200);
+  --section-bg-3: var(--main-400);
+  --section-bg-4: var(--accent-400);
+}
+/* _____________________________________________________________________________________________________________________________________ */
+
 /* =========================================================
    SEMANTISKE TOKEN
    ========================================================= */
