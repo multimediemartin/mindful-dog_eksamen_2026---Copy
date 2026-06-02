@@ -1,38 +1,59 @@
 ---
 /* =========================================================
-	 TEMA-KNAP
+	 TEMA-KNAP (STAKKET TEKST & GLIDENDE SLIDER VERSION)
 	 Skifter mellem standard og dark ved at ændre data-theme på html.
 	 ========================================================= */
+import darkIcon from "../../assets/icon/moon.svg";
+import lightIcon from "../../assets/icon/sun.svg";
 
 type ThemeButtonSize = "sm" | "md" | "lg" | "xl";
 
 interface Props {
   size?: ThemeButtonSize;
   label?: string;
-  darkLabel?: string;
-  lightLabel?: string;
   stylingclasses?: string;
 }
 
 const {
   size = "md",
   label = "Skift tema",
-  darkLabel = "Mørkt tema",
-  lightLabel = "Lyst tema",
-  stylingclasses = "duration-200 hover:scale-[1.01]",
+  stylingclasses = "duration-300 hover:scale-[1.02]",
 } = Astro.props as Props;
 
-// Størrelsesvarianter, så knappen følger samme mønster som de andre knapper.
+// Knap-højder og tekststørrelser (Padding styres nu dynamisk for at sikre glidende overgang)
 const sizeClasses = {
-  sm: "h-[35px] px-4 text-size-14 rounded-sm gap-2",
-  md: "h-[44px] px-5 text-size-15 rounded-md gap-2",
-  lg: "h-[53px] px-6 text-size-17 rounded-md gap-3",
-  xl: "h-[81px] px-8 text-size-30 rounded-md gap-3",
+  sm: "h-[48px] text-size-12 rounded-full",
+  md: "h-[60px] text-size-14 rounded-full",
+  lg: "h-[74px] text-size-17 rounded-full",
+  xl: "h-[100px] text-size-25 rounded-full",
 };
 
-// Fælles knap-klasse bygget på de eksisterende tema-tokens.
+// Cirkel-størrelser til slider-knoppen
+const knobSizes = {
+  sm: "h-9 w-9",
+  md: "h-11 w-11",
+  lg: "h-14 w-14",
+  xl: "h-20 w-20",
+};
+
+// Dynamisk beregning af padding-lommer, så teksten skubbes perfekt i takt med animationen
+const paddingClasses = {
+  sm: { light: "pl-[12px] pr-[60px]", dark: "pl-[60px] pr-[12px]" },
+  md: { light: "pl-[16px] pr-[80px]", dark: "pl-[80px] pr-[16px]" },
+  lg: { light: "pl-[20px] pr-[100px]", dark: "pl-[100px] pr-[20px]" },
+  xl: { light: "pl-[28px] pr-[148px]", dark: "pl-[148px] pr-[28px]" },
+};
+
+// Præcis absolut placering af knoppen fra venstre side i pixel-værdier pr. variant
+const knobPositionClasses = {
+  sm: { light: "left-[calc(100%-48px)]", dark: "left-[12px]" },
+  md: { light: "left-[calc(100%-60px)]", dark: "left-[16px]" },
+  lg: { light: "left-[calc(100%-76px)]", dark: "left-[20px]" },
+  xl: { light: "left-[calc(100%-108px)]", dark: "left-[28px]" },
+};
+
 const buttonClass = [
-  "inline-flex items-center justify-center font-sans font-semibold leading-none transition-colors duration-150 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-400) focus-visible:ring-offset-2 cursor-pointer bg-(--button-primary-bg) text-(--button-primary-text) hover:bg-(--button-primary-bg-hover)",
+  "relative inline-flex items-center justify-between font-sans font-extrabold tracking-wider transition-all duration-300 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-(--main-400) focus-visible:ring-offset-2 cursor-pointer select-none border-0 overflow-hidden",
   sizeClasses[size],
   stylingclasses,
 ]
@@ -43,18 +64,15 @@ const buttonClass = [
 <button
   type="button"
   x-data={`{
-		// Gemmer aktuel tema i både Alpine state og localStorage.
 		theme: localStorage.getItem('theme') || document.documentElement.dataset.theme || 'standard',
 		init() {
 			this.applyTheme(this.theme);
 		},
-		// Sætter temaet på html-elementet, så CSS kan skifte efter data-theme.
 		applyTheme(theme) {
 			this.theme = theme;
 			document.documentElement.dataset.theme = theme;
 			localStorage.setItem('theme', theme);
 		},
-		// vælger mellem lys og mørk tilstand.
 		toggle() {
 			this.applyTheme(this.theme === 'dark' ? 'standard' : 'dark');
 		}
@@ -62,8 +80,29 @@ const buttonClass = [
   x-init="init()"
   @click="toggle()"
   class={buttonClass}
+  x-bind:class={`theme === 'dark' 
+    ? 'bg-(--primitive-main-100) text-(--primitive-neutral-900) ${paddingClasses[size].dark}' 
+    : 'bg-(--primitive-main-500) text-(--primitive-neutral-0) ${paddingClasses[size].light}'`}
 >
-  <!-- Teksten skifter afhængigt af det aktive tema. -->
-  <span x-text="theme === 'dark' ? lightLabel : darkLabel"></span>
+  <div
+    class="flex shrink-0 flex-col text-left leading-[0.95] uppercase transition-all duration-300 ease-in-out select-none"
+  >
+    <span x-text="theme === 'dark' ? 'DARK' : 'LIGHT'"></span>
+    <span x-text="'MODE'"></span>
+  </div>
+
   <span class="sr-only">{label}</span>
+
+  <div
+    class={`absolute top-1/2 -translate-y-1/2 flex items-center justify-center shrink-0 rounded-full p-2 transition-all duration-300 ease-in-out ${knobSizes[size]}`}
+    x-bind:class={`theme === 'dark' 
+      ? 'bg-(--primitive-neutral-500) ${knobPositionClasses[size].dark}' 
+      : 'bg-(--primitive-neutral-0) ${knobPositionClasses[size].light}'`}
+  >
+    <img
+      x-bind:src={`theme === 'dark' ? '${darkIcon.src}' : '${lightIcon.src}'`}
+      alt="Theme status indicator"
+      class="h-full w-full object-contain transition-transform duration-300 ease-in-out"
+    />
+  </div>
 </button>
