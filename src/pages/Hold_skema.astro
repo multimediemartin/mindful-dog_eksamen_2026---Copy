@@ -1,0 +1,24 @@
+---
+//@ts-nocheck
+import MainLayout from "../layouts/MainLayout.astro";
+import Heading from "../components/Heading.astro";
+import Button from "../components/Buttons__&_links/Button.astro";
+import Link from "../components/Buttons__&_links/Link.astro";
+import ProductCard from "../components/cards/ProductCard.astro";
+import HoldSkema from "../components/HoldSkema.astro";
+---
+
+<MainLayout title="Hold oversigt">
+  <article>
+    <Heading htmlheading="h1" size="h1" font="display" weight="semibold"
+      >Hold Skema</Heading
+    >
+    <Button>Klik!</Button>
+    <p>
+      Link til <Link href="https://www.kea.dk" target="_blank"
+        >En anden side</Link
+      >
+    </p>
+  </article>
+  <HoldSkema selectedHold={Astro.url.searchParams.get("hold") || "Alle"} />
+</MainLayout>

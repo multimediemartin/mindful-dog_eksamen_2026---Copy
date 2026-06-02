@@ -1,0 +1,164 @@
+---
+import Square from "./Green_square.astro";
+import Heading from "../Heading.astro";
+import Text from "../Text.astro";
+
+type PointItem = {
+  label: string;
+  text: string;
+};
+
+interface Props {
+  punkt?: string;
+  title?: string;
+  description?: string;
+  readMorePreviewLength?: number;
+  points?: PointItem[];
+  containerClass?: string;
+  headerClass?: string;
+  bodyClass?: string;
+  titleClass?: string;
+  descriptionClass?: string;
+  pointItemClass?: string;
+  pointLabelClass?: string;
+  pointTextClass?: string;
+}
+
+const {
+  punkt = "Punkt nummer her",
+  title = "Overskrift her",
+  description = "Tekst her",
+  readMorePreviewLength,
+  points = [],
+  containerClass = "",
+  headerClass = "",
+  bodyClass = "",
+  titleClass = "",
+  descriptionClass = "",
+  pointItemClass = "",
+  pointLabelClass = "",
+  pointTextClass = "",
+} = Astro.props as Props;
+---
+
+<article
+  class:list={[
+    "rounded-md border border-(--neutral-200) bg-(--neutral-100) p-8 text-(--neutral-500)",
+    containerClass,
+  ]}
+>
+  <div class:list={["mb-4 flex", headerClass]}>
+    <Square punkt={punkt} />
+    <div class="pl-4">
+      <Heading
+        htmlheading="h5"
+        size="h5"
+        font="display"
+        weight="semibold"
+        stylingclasses={titleClass}
+      >
+        {title}
+      </Heading>
+    </div>
+  </div>
+
+  {
+    readMorePreviewLength ? (
+      <div
+        x-data={`{
+          open: false,
+          previewText: ${JSON.stringify(
+            description.length > readMorePreviewLength
+              ? `${description.slice(0, readMorePreviewLength)}…`
+              : description,
+          )},
+          fullText: ${JSON.stringify(description)},
+          toggle() {
+            this.open = !this.open;
+          }
+        }`}
+        class:list={["flex flex-col gap-4", bodyClass]}
+      >
+        <Text
+          size="p2"
+          font="sans"
+          weight="regular"
+          stylingclasses={descriptionClass}
+        >
+          <span x-text="open ? fullText : previewText" />
+        </Text>
+
+        {points.length > 0 && (
+          <div x-show="open" x-cloak class="flex flex-col gap-4">
+            {points.map((point) => (
+              <div class:list={[pointItemClass]}>
+                <Text
+                  size="label_1"
+                  font="display"
+                  weight="bold"
+                  stylingclasses={pointLabelClass}
+                >
+                  {point.label}
+                </Text>
+                <Text
+                  size="p2"
+                  font="sans"
+                  weight="regular"
+                  stylingclasses={pointTextClass}
+                >
+                  {point.text}
+                </Text>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {description.length > readMorePreviewLength && (
+          <button
+            type="button"
+            @click="toggle()"
+            class="inline-flex cursor-pointer self-start font-sans text-(--link-text) underline decoration-1 underline-offset-2 transition-opacity hover:opacity-70"
+          >
+            <span x-text="open ? 'Læs mindre' : 'Læs mere'" />
+          </button>
+        )}
+      </div>
+    ) : (
+      <div class:list={["flex flex-col gap-4", bodyClass]}>
+        <Text
+          size="p2"
+          font="sans"
+          weight="regular"
+          stylingclasses={descriptionClass}
+        >
+          {description}
+        </Text>
+
+        {points.length > 0 && (
+          <div class="flex flex-col gap-4">
+            {points.map((point) => (
+              <div class:list={[pointItemClass]}>
+                <Text
+                  size="label_1"
+                  font="display"
+                  weight="bold"
+                  stylingclasses={pointLabelClass}
+                >
+                  {point.label}
+                </Text>
+                <Text
+                  size="p2"
+                  font="sans"
+                  weight="regular"
+                  stylingclasses={pointTextClass}
+                >
+                  {point.text}
+                </Text>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+</article>

@@ -1,0 +1,214 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import Heading from "../components/Heading.astro";
+import Infobox_1 from "../components/infobox/Infobox_type_1.astro";
+import Infobox_2 from "../components/infobox/Infobox_type_2.astro";
+import Infobox_3 from "../components/infobox/Infobox_type_3.astro";
+import Infobox_4 from "../components/infobox/Infobox_type_4.astro";
+import Infobox_5 from "../components/infobox/Infobox_type_5.astro";
+import Infobox_6 from "../components/infobox/Infobox_type_6.astro";
+import Check from "../assets/icon/check.svg";
+import CheckI from "../assets/icon/check_inverse.svg";
+import Cross from "../assets/icon/cross.svg";
+import CrossI from "../assets/icon/cross_inverse.svg";
+import Medal from "../assets/icon/medal.svg";
+import Tid from "../assets/icon/tid.svg";
+import Lokation from "../assets/icon/lokation.svg";
+import Text from "../components/Text.astro";
+---
+
+<MainLayout title="Infoboks">
+  <section class="mx-auto w-[95cqw]">
+   <Heading
+          htmlheading="h1"
+          size="h1"
+          font="display"
+          weight="bold">Infobox Sandbox</Heading>
+
+    <div class="flex flex-wrap gap-4">
+      <!-- Infobox 1 -->
+      <Infobox_1>
+        <Check slot="punkt" />
+        <Heading
+          slot="overskrift"
+          htmlheading="h3"
+          size="h3"
+          font="display"
+          weight="semibold"
+          stylingclasses="!text-size-30">Overskrift</Heading
+        >
+      </Infobox_1>
+
+      <!-- Infobox 2 -->
+      <Infobox_2>
+        <Text slot="punkt">0.0</Text>
+        <Heading
+          slot="overskrift"
+          htmlheading="h6"
+          size="h6"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="indhold" size="p3">Tekst er her</Text></Infobox_2
+      >
+
+      <!-- Infobox 3 -->
+      <Infobox_3>
+        <Text slot="punkt">1.0</Text>
+        <Heading
+          slot="overskrift"
+          htmlheading="h6"
+          size="h6"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="indhold" size="p3">Tekst er her</Text></Infobox_3
+      >
+
+      <!-- Infobox 4 -->
+      <Infobox_4
+        ><Text slot="punkt"></Text>
+        <Text slot="topskrift" size="label_2" weight="semibold" stylingclasses="tracking-widest">
+          Topskrift her
+        </Text>
+        <Heading
+          slot="overskrift"
+          htmlheading="h6"
+          size="h6"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="indhold">Tekst er her</Text></Infobox_4
+      >
+
+      <!-- Infobox 5 -->
+      <Infobox_5>
+        <Cross slot="punkt" />
+        <Heading
+          slot="overskrift"
+          htmlheading="h6"
+          size="h6"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <ul
+          slot="liste"
+          class="[&_li]:my-2 [&_li]:flex [&_li]:gap-4"
+        >
+          <li><CrossI class="size-6" /><Text stylingclasses="!text-size-10 !md:text-size-15"> Liste punkt her</Text></li>
+          <li><CrossI class="size-6" /><Text stylingclasses="!text-size-10 !md:text-size-15"> Andet liste punkt her</Text></li>
+        </ul>
+      </Infobox_5>
+
+      <Infobox_5>
+        <Check slot="punkt" />
+        <Heading
+          slot="overskrift"
+          htmlheading="h6"
+          size="h6"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <ul
+          slot="liste"
+          class="[&_li]:my-2 [&_li]:flex [&_li]:gap-4 [&_li]:font-sans"
+        >
+          <li><CheckI class="size-6" /> <Text stylingclasses="!text-size-10 !md:text-size-15"> Liste punkt her</Text></li>
+          <li><CheckI class="size-6" /><Text stylingclasses="!text-size-10 !md:text-size-15"> Andet liste punkt her</Text></li>
+        </ul>
+      </Infobox_5>
+
+      <!-- Infobox 6 -->
+      <Infobox_6
+        ><Medal slot="punkt" />
+        <Text slot="topskrift" size="label_2" weight="semibold" stylingclasses="tracking-widest">
+          Topskrift her
+        </Text>
+        <Heading
+          slot="overskrift_1"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_1" size="p3">Info 1</Text>
+        <Heading
+          slot="overskrift_2"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_2" size="p3">Info 2</Text>
+        <Heading
+          slot="overskrift_3"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_3" size="p3">Info 3</Text></Infobox_6
+      >
+      <Infobox_6
+        ><Lokation slot="punkt" />
+        <Text slot="topskrift" size="label_2" weight="semibold" stylingclasses="tracking-widest">
+          Topskrift her
+        </Text>
+        <Heading
+          slot="overskrift_1"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_1" size="p3">Info 1</Text>
+        <Heading
+          slot="overskrift_2"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_2" size="p3">Info 2</Text>
+        <Heading
+          slot="overskrift_3"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_3" size="p3">Info 3</Text></Infobox_6
+      >
+      <Infobox_6
+        ><Tid slot="punkt" />
+        <Text slot="topskrift" size="label_2" stylingclasses="tracking-widest">
+          Topskrift her
+        </Text>
+        <Heading
+          slot="overskrift_1"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_1" size="p3">Info 1</Text>
+        <Heading
+          slot="overskrift_2"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_2" size="p3">Info 2</Text>
+        <Heading
+          slot="overskrift_3"
+          htmlheading="h5"
+          size="h5"
+          font="display"
+          weight="semibold">Overskrift</Heading
+        >
+        <Text slot="info_3" size="p3">Info 3</Text></Infobox_6
+      >
+    </div>
+  </section>
+</MainLayout>

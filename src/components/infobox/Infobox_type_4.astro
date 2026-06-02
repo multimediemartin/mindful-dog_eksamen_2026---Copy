@@ -1,0 +1,119 @@
+---
+import Square from "./Green_square.astro";
+import Heading from "../Heading.astro";
+import Text from "../Text.astro";
+
+interface Props {
+  // Green square label shown in the header.
+  punkt?: string;
+  // Small eyebrow/top label.
+  topskrift?: string;
+  // Main heading for the card.
+  title?: string;
+  // Supporting description text.
+  description?: string;
+  // If set, description is rendered as a ReadMore block with this preview length.
+  readMorePreviewLength?: number;
+  // Container utility classes.
+  containerClass?: string;
+  // Header wrapper utility classes.
+  headerClass?: string;
+  // Title utility classes.
+  titleClass?: string;
+  // Eyebrow utility classes.
+  topskriftClass?: string;
+  // Description utility classes.
+  descriptionClass?: string;
+}
+
+const {
+  punkt = "",
+  topskrift = "Topskrift her",
+  title = "Overskrift her",
+  description = "Tekst her",
+  readMorePreviewLength,
+  containerClass = "",
+  headerClass = "",
+  titleClass = "",
+  topskriftClass = "",
+  descriptionClass = "",
+} = Astro.props as Props;
+---
+
+<article
+  class:list={[
+    "rounded-md bg-(--main-200) p-8 text-(--neutral-500)",
+    containerClass,
+  ]}
+>
+  <div class:list={["mb-4 flex", headerClass]}>
+    <Square punkt={punkt} />
+    <div class="flex flex-col gap-1 pl-4">
+      <Text
+        size="label_2"
+        font="display"
+        weight="bold"
+        stylingclasses={topskriftClass}
+      >
+        {topskrift}
+      </Text>
+      <Heading
+        htmlheading="h6"
+        size="h6"
+        font="display"
+        weight="semibold"
+        stylingclasses={titleClass}
+      >
+        {title}
+      </Heading>
+    </div>
+  </div>
+
+  {
+    readMorePreviewLength ? (
+      <div
+        x-data={`{
+          open: false,
+          previewText: ${JSON.stringify(
+            description.length > readMorePreviewLength
+              ? `${description.slice(0, readMorePreviewLength)}…`
+              : description,
+          )},
+          fullText: ${JSON.stringify(description)},
+          toggle() {
+            this.open = !this.open;
+          }
+        }`}
+        class="flex flex-col gap-3"
+      >
+        <Text
+          size="p2"
+          font="sans"
+          weight="regular"
+          stylingclasses={descriptionClass}
+        >
+          <span x-text="open ? fullText : previewText" />
+        </Text>
+
+        {description.length > readMorePreviewLength && (
+          <button
+            type="button"
+            @click="toggle()"
+            class="inline-flex cursor-pointer self-start font-sans text-(--link-text) underline decoration-1 underline-offset-2 transition-opacity hover:opacity-70"
+          >
+            <span x-text="open ? 'Læs mindre' : 'Læs mere'" />
+          </button>
+        )}
+      </div>
+    ) : (
+      <Text
+        size="p2"
+        font="sans"
+        weight="regular"
+        stylingclasses={descriptionClass}
+      >
+        {description}
+      </Text>
+    )
+  }
+</article>

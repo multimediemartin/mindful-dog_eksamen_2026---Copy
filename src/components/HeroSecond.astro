@@ -1,0 +1,149 @@
+---
+import Heading from "./Heading.astro";
+import Text from "./Text.astro";
+import LinkButton from "./Buttons__&_links/LinkButton.astro";
+
+type HeroImage = {
+  src: string;
+  width: number;
+  height: number;
+};
+
+type LinkButtonSize = "sm" | "md" | "lg" | "xl";
+type LinkButtonColor =
+  | "main"
+  | "primary"
+  | "secondary"
+  | "accent"
+  | "neutral"
+  | "outline";
+
+interface ButtonConfig {
+  label: string;
+  color: LinkButtonColor;
+  href: string;
+  size?: LinkButtonSize;
+  stylingclasses?: string;
+  target?: string;
+  rel?: string;
+}
+
+interface Props {
+  imageSrc: HeroImage | string;
+  imageAlt?: string;
+  imagePosition?: "left" | "right";
+  topLabel?: string;
+  title: string;
+  tags?: string[];
+  description?: string;
+  buttons?: ButtonConfig[];
+  layoutGapClass?: string;
+  contentGapClass?: string;
+}
+
+const {
+  imageSrc,
+  imageAlt = "Hero billede",
+  imagePosition = "left",
+  topLabel,
+  title,
+  tags = [],
+  description,
+  buttons = [],
+  layoutGapClass = "gap-[clamp(2rem,4vw,5rem)]",
+  contentGapClass = "gap-[clamp(0.875rem,1.8vw,1.25rem)]",
+} = Astro.props as Props;
+
+const imgSrc = typeof imageSrc === "string" ? imageSrc : imageSrc.src;
+---
+
+<section class="w-full">
+  <div
+    class={`flex w-full flex-col items-start ${layoutGapClass} md:flex-row md:items-center ${
+      imagePosition === "right" ? "md:flex-row-reverse" : ""
+    }`}
+  >
+    {
+      /* Billedet får en responsiv bredde, så det ikke hopper hårdt mellem mobile og desktop. */
+    }
+    <div
+      class="relative w-full min-w-0 overflow-hidden rounded-md md:w-1/2 md:shrink-0"
+    >
+      <img
+        src={imgSrc}
+        alt={imageAlt}
+        class="h-auto w-full rounded-md object-cover"
+      />
+    </div>
+
+    {
+      /* Indholdet får lov at vokse frit, så layoutet holder sig roligt ved alle mellemstørrelser. */
+    }
+    <div
+      class={`flex w-full min-w-0 flex-col items-start ${contentGapClass} px-[clamp(1rem,4vw,4rem)] pt-[clamp(1rem,2vw,2rem)] md:w-1/2 md:px-[clamp(1.5rem,4vw,5rem)] md:pt-[clamp(2rem,4vw,4rem)]`}
+    >
+      {
+        topLabel && (
+          <Text
+            size="label_1"
+            font="sans"
+            weight="regular"
+            stylingclasses="text-(--neutral-400) tracking-widest uppercase"
+          >
+            {topLabel}
+          </Text>
+        )
+      }
+
+      <Heading
+        htmlheading="h2"
+        size="h2"
+        font="display"
+        weight="bold"
+        stylingclasses="max-w-none break-words text-(--neutral-500)"
+      >
+        {title}
+      </Heading>
+
+      {
+        tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 sm:gap-3">
+            {tags.map((tag) => (
+              <span class="text-size-10 sm:text-size-12 md:text-size-14 rounded-sm bg-(--main-400) px-3 py-1 font-semibold tracking-wider text-(--neutral-100) uppercase">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
+
+      {
+        description && (
+          <Text size="p2" stylingclasses="text-(--neutral-500)">
+            {description}
+          </Text>
+        )
+      }
+
+      <slot />
+
+      {
+        buttons.length > 0 && (
+          <div class="flex flex-wrap gap-3 pt-2 md:gap-4">
+            {buttons.map((btn) => (
+              <LinkButton
+                href={btn.href}
+                color={btn.color}
+                label={btn.label}
+                size={btn.size}
+                stylingclasses={btn.stylingclasses}
+                target={btn.target}
+                rel={btn.rel}
+              />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+import Heading from "../components/Heading.astro";
+import MainLayout from "../layouts/MainLayout.astro";
+import InstaLogo from "../assets/icon/Instagram_Glyph_Dark.svg";
+import FBLogo from "../assets/icon/Facebook_Logo_Dark.svg";
+import LinkedInLogo from "../assets/icon/In-Bug_Dark.svg";
+import NyhedsbrevSign from "../components/NyhedsbrevSign.astro";
+---
+
+<MainLayout title="Nyhedsbrev">
+  <section class="mx-auto my-16 max-w-[55ch] place-self-center p-4">
+    <p class="text-size-10 font-semibold tracking-widest text-(--main-400)">
+      NYHEDSBREV
+    </p>
+    <Heading htmlheading="h3" size="h3" font="display" weight="semibold">
+      Hold Dig Opdateret
+    </Heading>
+    <p>
+      Tilmeld dig vores nyhedbrev og vær den første der hører om nye rabatter og
+      andre spændende tilbud.
+    </p>
+    <NyhedsbrevSign />
+
+    <div class="mx-auto my-16 flex flex-wrap gap-4">
+      <div class="flex gap-4">
+        <a
+          href="https://www.instagram.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <InstaLogo class="aspect-square h-auto w-[20vw] md:w-[15vw]" />
+        </a>
+        <a
+          href="https://www.facebook.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <FBLogo class="aspect-square h-auto w-[20vw] md:w-[15vw]" />
+        </a>
+        <a
+          href="https://www.linkedin.com/company/mindful-dog"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <LinkedInLogo class="aspect-square h-auto w-[20vw] md:w-[15vw]" />
+        </a>
+      </div>
+    </div>
+  </section>
+</MainLayout>

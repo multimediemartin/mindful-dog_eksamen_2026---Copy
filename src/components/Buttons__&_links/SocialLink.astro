@@ -1,0 +1,58 @@
+---
+/* ========================================================= 
+SOCIAL LINK
+========================================================= */
+
+type SocialIcon = {
+  src: string;
+  width: number;
+  height: number;
+};
+
+type SocialLinkSize = "sm" | "md" | "lg" | "xl";
+
+interface Props {
+  // Supported icon container sizes.
+  size?: SocialLinkSize;
+  // Destination URL for the social profile.
+  href?: string;
+  // Supports either an Astro image object or a plain string URL.
+  iconSrc: SocialIcon | string;
+  // Accessible label and alt text.
+  iconAlt?: string;
+}
+
+const {
+  size = "md",
+  href = "#",
+  iconSrc,
+  iconAlt = "Social Link",
+} = Astro.props as Props;
+
+const sizeClasses = {
+  sm: "w-12 h-12",
+  md: "w-16 h-16",
+  lg: "w-20 h-20",
+  xl: "w-auto h-fill",
+};
+
+const imgSrc = typeof iconSrc === "string" ? iconSrc : iconSrc.src;
+const imgWidth = typeof iconSrc === "string" ? undefined : iconSrc.width;
+const imgHeight = typeof iconSrc === "string" ? undefined : iconSrc.height;
+---
+
+<a
+  href={href}
+  aria-label={iconAlt}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="inline-flex items-center justify-center transition-transform hover:scale-105"
+>
+  <img
+    src={imgSrc}
+    alt={iconAlt}
+    width={imgWidth}
+    height={imgHeight}
+    class={`block ${sizeClasses[size]}`}
+  />
+</a>

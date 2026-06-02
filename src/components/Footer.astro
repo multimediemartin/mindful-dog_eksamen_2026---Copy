@@ -1,0 +1,81 @@
+---
+import Logo from "../assets/icon/logoHund.svg";
+import InstaLogo from "../assets/icon/Instagram_Glyph_Green.svg";
+import FBLogo from "../assets/icon/Facebook_Logo_Green.svg";
+import LinkedInLogo from "../assets/icon/In-Bug_Green.svg";
+import { Image } from "astro:assets";
+---
+
+<footer class="flex flex-col gap-4 bg-(--main-400) p-6 text-(--main-200)">
+  <div class="lg:flex lg:justify-between lg:gap-8">
+    <span
+      class="font font-display text-size-65 md:text-size-100 leading-(--text-size-65) font-bold md:leading-(--text-size-100)"
+    >
+      Mindful<br />Dog<br />Academy
+    </span>
+
+    <div
+      class="[&_p]:text-size-20 mt-5 flex flex-col gap-4 lg:flex-row lg:gap-16"
+    >
+      <div class="flex flex-col gap-4">
+        <span class="text-size-10 font-sans font-semibold tracking-widest">
+          Kontakt
+        </span>
+        <div class="[&_p]:text-size-20">
+          <h6 class="text-size-20 font-semibold">Mindful-Dog Hovedkontor</h6>
+          <p class="font-thin">Grace Hidalgo</p>
+        </div>
+        <p class="font-thin">Tlf.: +45 29 60 55 39</p>
+        <p class="font-thin">E-mail: grace@mindful-dog.dk</p>
+      </div>
+      <div
+        class="font font-display [&_a]:text-size-20 flex flex-col gap-4 [&_a]:font-semibold [&_a]:no-underline [&_a]:hover:underline"
+      >
+        <span class="text-size-10 font-sans font-semibold tracking-widest">
+          Information
+        </span>
+        <a href="">Salgs- og Handelsbetingelser</a>
+        <a href="">Læs om Mindful-Dog Metoden</a>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="grid grid-cols-4 place-items-center gap-4 md:col-span-3 [&_span]:my-auto [&_span]:h-0.5 [&_span]:w-full [&_span]:bg-(--main-200) md:[&_span]:h-1"
+  >
+    <span class="col-span-2"></span>
+    <Logo class="h-4/5 w-4/5" />
+    <span class="col-span-1"></span>
+  </div>
+
+  <div class="flex flex-wrap gap-4 md:flex-nowrap md:justify-between">
+    <div class="flex gap-4 md:order-2">
+      <a
+        href="https://www.instagram.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <InstaLogo class="aspect-square h-auto w-[10vw] md:w-[5vw]" />
+      </a>
+      <a
+        href="https://www.facebook.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FBLogo class="aspect-square h-auto w-[10vw] md:w-[5vw]" />
+      </a>
+      <a
+        href="https://www.linkedin.com/company/mindful-dog"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <LinkedInLogo class="aspect-square h-auto w-[10vw] md:w-[5vw]" />
+      </a>
+    </div>
+    <a
+      href="/Nyhedsbrev"
+      class="h-fit w-[66vw] rounded-lg bg-(--main-200) px-6 py-2 text-center font-extrabold text-(--main-400) transition-colors duration-150 hover:bg-(--main-500) md:order-1 md:col-start-1 md:w-[33vw] md:text-[2cqw]"
+      >TILMELD NYHEDSBREV</a
+    >
+  </div>
+</footer>

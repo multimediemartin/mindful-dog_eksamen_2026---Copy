@@ -1,0 +1,126 @@
+---
+//@ts-nocheck
+import MainLayout from "../layouts/MainLayout.astro";
+import Heading from "./Heading.astro";
+import Button from "../components/Buttons__&_links/Button.astro";
+import LinkButton from "./Buttons__&_links/LinkButton.astro";
+import Link from "../components/Buttons__&_links/Link.astro";
+import HoldCard from "../components/cards/HoldCard.astro";
+import {
+  getAllData,
+  lokationGroups,
+  groupStyles,
+  getLokationGroup,
+  getFilterLokation,
+  getGroupedByLokation,
+  getDisplayedGroups,
+  krTilDKK,
+} from "../assets/js/supabase_v2.js";
+
+const selectedLokation = Astro.props.selectedLokation || "Alle";
+
+const services = await getAllData();
+// console.log(services);
+
+const filterLokation = getFilterLokation(services, selectedLokation);
+const groupedByLokation = getGroupedByLokation(filterLokation);
+const displayedGroups = getDisplayedGroups(groupedByLokation, selectedLokation);
+---
+
+<div class="m-6 grid grid-cols-3 gap-4">
+  <LinkButton size="sm" color="accent" href="?lokation=Alle" label="Alle" />
+  {
+    displayedGroups.map((filter) => {
+      const groupClass = getLokationGroup(filter);
+      return (
+        <LinkButton
+          size="sm"
+          color="primary"
+          href={`?lokation=${encodeURIComponent(filter)}`}
+        >
+          {filter}
+        </LinkButton>
+      );
+    })
+  }
+</div>
+
+<section>
+  {
+    displayedGroups.map((group) => {
+      const groupClass = getLokationGroup(group);
+
+      return (
+        <article
+          data-group={group}
+          class={`mb-8 border p-6 ${groupStyles[group] || "border-(--neutral-500) bg-(--neutral-100)"}`}
+        >
+          <Heading
+            stylingclassesclass="mb-4"
+            htmlheading="h4"
+            size="h4"
+            font="display"
+            weight="semibold"
+          >
+            {group}
+          </Heading>
+          <ul class="grid auto-rows-auto gap-2 sm:max-md:grid-cols-2 2xl:grid-cols-2">
+            {groupedByLokation[group].map((item, index) => {
+              const prisTekst = krTilDKK.format(Number(item.pris));
+              const t = item.traenere;
+              const i = item.ikoner;
+              return (
+                <HoldCard
+                  adresse={
+                    t?.adresse_1 +
+                    "," +
+                    " " +
+                    t?.postnummer_1 +
+                    " " +
+                    t?.bynavn_1
+                  }
+                  pris={prisTekst}
+                  hold={item.hold}
+                  path={item.slug}
+                  status_ikon={i?.ikon_url}
+                  status_txt={i?.status_txt}
+                />
+              );
+            })}
+          </ul>
+        </article>
+      );
+    })
+  }
+</section>
+
+<script is:inline>
+  const params = new URLSearchParams(window.location.search);
+  const selectedLokation = params.get("lokation") || "Alle";
+  const lokationGroups = {
+    Sydfyn: ["Svendborg"],
+    Vestsjælland: ["Vestsjælland"],
+    Midtjylland: ["Ikast"],
+    Sydjylland: ["Vejen", "Sydjylland"],
+    Sønderjylland: ["Sønderjylland", "Skærbæk"],
+    Als: ["Als"],
+  };
+
+  const selectedGroup =
+    selectedLokation === "Alle"
+      ? "Alle"
+      : lokationGroups[selectedLokation]
+        ? selectedLokation
+        : Object.keys(lokationGroups).find((group) =>
+            lokationGroups[group].includes(selectedLokation),
+          );
+
+  document.querySelectorAll("article[data-group]").forEach((article) => {
+    const group = article.dataset.group;
+    if (selectedGroup === "Alle" || group === selectedGroup) {
+      article.style.display = "";
+    } else {
+      article.style.display = "none";
+    }
+  });
+</script>

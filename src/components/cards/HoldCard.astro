@@ -1,0 +1,43 @@
+---
+import Heading from "../Heading.astro";
+import Text from "../Text.astro";
+
+const { hold, pris, adresse, status_ikon, status_txt, path } = Astro.props;
+---
+
+<li class="row-span-2 grid">
+  <article
+    class="grid grid-cols-subgrid gap-2 rounded-md border p-4 md:grid-cols-6"
+  >
+    <div class="flex gap-2 max-md:-translate-x-2 md:col-span-2 md:gap-4">
+      <img src={status_ikon} alt={status_txt} class="aspect-square h-12 w-12" />
+      <div>
+        <Heading htmlheading="h6" size="h6" font="display" weight="semibold">
+          {hold}
+        </Heading>
+        <Text>{status_txt}</Text>
+      </div>
+    </div>
+
+    <div class="flex grid-cols-4 justify-between md:col-span-4 md:grid">
+      <div class="flex gap-6 md:col-span-3">
+        <div class="hidden md:inline-block">
+          <Text weight="bold">LOKATION</Text>
+          <Text>{adresse}</Text>
+        </div>
+        <div>
+          <Text weight="bold">PRIS</Text>
+          <Text>{pris}</Text>
+        </div>
+      </div>
+      <span class="my-auto">
+        <a
+          href={"/Hold_side/" + path}
+          class="text-size-14 md:text-size-16) rounded-md bg-(--main-400) px-4 py-2 whitespace-nowrap text-(--text-inverse) transition-colors duration-150 hover:bg-(--main-500)"
+        >
+          LÆS MERE
+        </a>
+      </span>
+    </div>
+  </article>
+</li>

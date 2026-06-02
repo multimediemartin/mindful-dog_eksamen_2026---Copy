@@ -1,0 +1,49 @@
+---
+import Text from "./Text.astro";
+import Heading from "../components/Heading.astro";
+import { krTilDKK } from "../assets/js/supabase_v2";
+const { img, type, lokation, hold, pris, beskrivelse } = Astro.props;
+
+const prisTekst = krTilDKK.format(Number(pris));
+---
+
+<section
+  class="mx-auto grid w-[90vw] gap-4 overflow-hidden lg:grid-cols-2 lg:gap-4"
+>
+  <img
+    src={img}
+    alt={type}
+    class="h-fill aspect-3/2 w-[100cqw] rounded-md border-r-8 object-cover object-[0%_20%]"
+  />
+  <div class="my-auto">
+    <Text size="label_1" weight="semibold">
+      {lokation}
+    </Text>
+    <div>
+      <Heading htmlheading="h4" size="h4" font="display" weight="semibold"
+        >{hold}</Heading
+      >
+      <Text stylingclasses="my-6 ">
+        {beskrivelse}
+      </Text>
+    </div>
+    <div
+      class="my-4 flex flex-col justify-between gap-4 lg:flex-row lg:items-center"
+    >
+      <div
+        class="text-size-20) flex w-fit gap-4 rounded-md bg-(--main-400) px-4 py-2 text-(--text-inverse) lg:items-center"
+      >
+        <Text weight="bold">
+          {prisTekst}
+        </Text>
+        <Text> LÆG I KURV </Text>
+      </div>
+      <a
+        href="#hSingle_inf"
+        class="text-size-20 w-fit rounded-md border-2 border-(--primary-500) bg-(--primary-500) px-4 py-2 text-(--text-main) transition-colors duration-150 hover:bg-(--accent-200)"
+      >
+        MERE INFO
+      </a>
+    </div>
+  </div>
+</section>

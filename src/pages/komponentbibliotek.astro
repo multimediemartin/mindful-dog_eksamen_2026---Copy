@@ -1,0 +1,691 @@
+---
+/* =========================================================
+   KOMPONENTBIBLIOTEK
+   Enkel oversigt over alle knap- og link-komponenter.
+   ========================================================= */
+
+import MainLayout from "../layouts/MainLayout.astro";
+import Heading from "../components/Heading.astro";
+import Text from "../components/Text.astro";
+import Link from "../components/Buttons__&_links/Link.astro";
+import SearchButton from "../components/Buttons__&_links/SearchButton.astro";
+import DropdownButton from "../components/Buttons__&_links/DropdownButton.astro";
+import LocationButton from "../components/Buttons__&_links/LocationButton.astro";
+import StandardButton from "../components/Buttons__&_links/Button.astro";
+import LinkButton from "../components/Buttons__&_links/LinkButton.astro";
+import SocialLink from "../components/Buttons__&_links/SocialLink.astro";
+import ReadMore from "../components/Buttons__&_links/ReadMore.astro";
+import Breadcrumb from "../components/Buttons__&_links/Breadcrumb.astro";
+import Hero_1 from "../components/HeroMain.astro";
+import Hero_2 from "../components/HeroSecond.astro";
+import FacebookIcon from "../assets/icon/Facebook_Logo_Dark.svg";
+import InstagramIcon from "../assets/icon/Instagram_Glyph_Dark.svg";
+import LinkedInIcon from "../assets/icon/In-Bug_Dark.svg";
+
+const dropdownOptions = ["Hvalp", "Voksen", "Tricks"];
+
+const breadcrumbTrail = [
+  { label: "Forside", href: "/" },
+  { label: "Hold", href: "/Hold_oversigt" },
+  { label: "Hvalp", filter: "Hvalp" },
+  { label: "Voksen", filter: "Voksen" },
+  { label: "Tricks", filter: "Tricks" },
+];
+
+const longText =
+  "Mindful-Dog Academy arbejder med en holistisk og relationsbaseret tilgang til hundetræning. Vi tror på at træning bygger broer mellem mennesker og hunde gennem nærvær, tydelig kommunikation og gensidig respekt — ikke gennem dominans eller frygt.";
+
+const videoSrc =
+  "https://cdn.coverr.co/videos/coverr-a-puppy-running-in-the-grass-4929/1080p.mp4";
+
+const headingVariants = ["h1", "h2", "h3", "h4", "h5", "h6"] as const;
+const textVariants = ["p1", "p2", "p3", "p4", "label_1", "label_1"] as const;
+const fontVariants = ["display", "sans"] as const;
+const weightVariants = ["bold", "semibold", "regular", "light"] as const;
+---
+
+<MainLayout title="Komponentbibliotek — knapper og links">
+  <div class="m-4 space-y-24 py-8 text-(--neutral-500)">
+    <!-- =========================================================
+     0. TYPOGRAFI
+========================================================= -->
+    <section class="my-4 space-y-8 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold">
+        Overskrifter
+      </Heading>
+
+      <!-- =========================================================
+       OVERSKRIFTSSTØRRELSER
+  ========================================================= -->
+      <div class="grid gap-4">
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">h1</Text>
+          <Heading htmlheading="h1" size="h1" font="display" weight="bold">
+            Mindful Dog — H1
+          </Heading>
+        </article>
+
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">h2</Text>
+          <Heading htmlheading="h2" size="h2" font="display" weight="bold">
+            Mindful Dog — H2
+          </Heading>
+        </article>
+
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">h3</Text>
+          <Heading htmlheading="h3" size="h3" font="display" weight="bold">
+            Mindful Dog — H3
+          </Heading>
+        </article>
+
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">h4</Text>
+          <Heading htmlheading="h4" size="h4" font="display" weight="bold">
+            Mindful Dog — H4
+          </Heading>
+        </article>
+
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">h5</Text>
+          <Heading htmlheading="h5" size="h5" font="display" weight="bold">
+            Mindful Dog — H5
+          </Heading>
+        </article>
+
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">h6</Text>
+          <Heading htmlheading="h6" size="h6" font="display" weight="bold">
+            Mindful Dog — H6
+          </Heading>
+        </article>
+      </div>
+
+      <!-- =========================================================
+       HEADING FONTS
+  ========================================================= -->
+      <div class="grid gap-4 md:grid-cols-2">
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">
+            Skrifttype
+          </Text>
+
+          <div class="space-y-3">
+            <Heading htmlheading="h4" size="h4" font="display" weight="regular">
+              Geologica / font-display
+            </Heading>
+
+            <Heading htmlheading="h4" size="h4" font="sans" weight="regular">
+              Manrope / font-sans
+            </Heading>
+          </div>
+        </article>
+
+        <!-- =========================================================
+         HEADING VÆGTE
+    ========================================================= -->
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold"> Vægt </Text>
+
+          <div class="space-y-3">
+            <Heading htmlheading="h4" size="h4" font="display" weight="bold">
+              Bold
+            </Heading>
+
+            <Heading htmlheading="h4" size="h4" font="display" weight="regular">
+              Regular
+            </Heading>
+
+            <Heading htmlheading="h4" size="h4" font="display" weight="light">
+              Light
+            </Heading>
+          </div>
+        </article>
+      </div>
+
+      <!-- =========================================================
+       PARAGRAPH TEXT
+  ========================================================= -->
+      <div class="grid gap-4">
+        <article class="rounded-lg border border-(--neutral-200) p-4">
+          <Text size="label_1" font="display" weight="semibold">
+            Paragraph text
+          </Text>
+
+          <div class="space-y-3">
+            <Text size="p1" font="sans" weight="regular">
+              p1 - Dette er en eksempeltekst, som viser størrelsen i
+              typografisystemet.
+            </Text>
+
+            <Text size="p2" font="sans" weight="regular">
+              p2 - Dette er en eksempeltekst, som viser størrelsen i
+              typografisystemet.
+            </Text>
+
+            <Text size="p3" font="sans" weight="regular">
+              p3 - Dette er en eksempeltekst, som viser størrelsen i
+              typografisystemet.
+            </Text>
+
+            <Text size="p4" font="sans" weight="regular">
+              p4 - Dette er en eksempeltekst, som viser størrelsen i
+              typografisystemet.
+            </Text>
+          </div>
+        </article>
+
+        <!-- =========================================================
+         LABEL TEXT (SEPARAT SEKTION)
+    ========================================================= -->
+        <div class="grid gap-4 md:grid-cols-2">
+          <article class="rounded-lg border border-(--neutral-200) p-4">
+            <Text size="label_1" font="display" weight="semibold">
+              Labels
+            </Text>
+
+            <div class="space-y-3">
+              <Text size="label_1" font="sans" weight="regular">
+                label_1 - Dette er en eksempeltekst til labels.
+              </Text>
+
+              <Text size="label_2" font="sans" weight="regular">
+                label_1 - Dette er en eksempeltekst til labels.
+              </Text>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         1. SØGEKNAPPER
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Søgeknapper</Heading
+      >
+
+      <div class="grid gap-6">
+        <SearchButton size="sm" />
+        <SearchButton size="lg" />
+      </div>
+    </section>
+
+    <!-- =========================================================
+         2. DROPDOWN-KNAPPER
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Dropdown buttons</Heading
+      >
+
+      <div class="flex flex-wrap gap-3">
+        <DropdownButton size="sm" color="primary" options={dropdownOptions} />
+        <DropdownButton size="sm" color="secondary" options={dropdownOptions} />
+        <DropdownButton size="sm" color="accent" options={dropdownOptions} />
+        <DropdownButton size="sm" color="main" options={dropdownOptions} />
+        <DropdownButton size="sm" color="neutral" options={dropdownOptions} />
+        <DropdownButton size="sm" color="outline" options={dropdownOptions} />
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <DropdownButton size="md" color="primary" options={dropdownOptions} />
+        <DropdownButton size="md" color="secondary" options={dropdownOptions} />
+        <DropdownButton size="md" color="accent" options={dropdownOptions} />
+        <DropdownButton size="md" color="main" options={dropdownOptions} />
+        <DropdownButton size="md" color="neutral" options={dropdownOptions} />
+        <DropdownButton size="md" color="outline" options={dropdownOptions} />
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <DropdownButton size="lg" color="primary" options={dropdownOptions} />
+        <DropdownButton size="lg" color="secondary" options={dropdownOptions} />
+        <DropdownButton size="lg" color="accent" options={dropdownOptions} />
+        <DropdownButton size="lg" color="main" options={dropdownOptions} />
+        <DropdownButton size="lg" color="neutral" options={dropdownOptions} />
+        <DropdownButton size="lg" color="outline" options={dropdownOptions} />
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <DropdownButton size="xl" color="primary" options={dropdownOptions} />
+        <DropdownButton size="xl" color="secondary" options={dropdownOptions} />
+        <DropdownButton size="xl" color="accent" options={dropdownOptions} />
+        <DropdownButton size="xl" color="main" options={dropdownOptions} />
+        <DropdownButton size="xl" color="neutral" options={dropdownOptions} />
+        <DropdownButton size="xl" color="outline" options={dropdownOptions} />
+      </div>
+    </section>
+
+    <!-- =========================================================
+     3. LOKATIONS-KNAPPER
+========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Lokations-knapper</Heading
+      >
+
+      <div class="grid justify-items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <LocationButton size="sm" color="main" location="Vestsjælland" />
+        <LocationButton size="sm" color="primary" location="Lokation" />
+        <LocationButton size="sm" color="secondary" location="Lokation" />
+      </div>
+
+      <div class="grid justify-items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <LocationButton size="md" color="main" location="Vestsjælland" />
+        <LocationButton size="md" color="primary" location="Vestsjælland" />
+        <LocationButton size="md" color="secondary" location="Als" />
+      </div>
+
+      <div class="grid justify-items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <LocationButton
+          size="lg"
+          color="main"
+          location="Vestsjælland"
+          address="Lillevej 2A, 7430 Ikast"
+        />
+        <LocationButton
+          size="lg"
+          color="primary"
+          location="Lokation"
+          address="Adresse, Postnr By"
+        />
+        <LocationButton
+          size="lg"
+          color="secondary"
+          location="Lokation"
+          address="Adresse, Postnr By"
+        />
+      </div>
+
+      <div class="grid justify-items-start gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <LocationButton
+          size="xl"
+          color="main"
+          location="Vestsjælland"
+          address="Lillevej 2A, 7430 Ikast"
+        />
+        <LocationButton
+          size="xl"
+          color="primary"
+          location="Lokation"
+          address="Adresse, Postnr By"
+        />
+        <LocationButton
+          size="xl"
+          color="secondary"
+          location="Lokation"
+          address="Adresse, Postnr By"
+        />
+      </div>
+    </section>
+    <!-- =========================================================
+         4. STANDARD-KNAPPER
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Standard-knapper</Heading
+      >
+
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <StandardButton size="sm" color="main" label="Main" />
+        <StandardButton size="sm" color="primary" label="Primary" />
+        <StandardButton size="sm" color="secondary" label="Secondary" />
+        <StandardButton size="sm" color="accent" label="Accent" />
+        <StandardButton size="sm" color="neutral" label="Neutral" />
+        <StandardButton size="sm" color="outline" label="Outline" />
+      </div>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <StandardButton size="md" color="main" label="Main" />
+        <StandardButton size="md" color="primary" label="Primary" />
+        <StandardButton size="md" color="secondary" label="Secondary" />
+        <StandardButton size="md" color="accent" label="Accent" />
+        <StandardButton size="md" color="neutral" label="Neutral" />
+        <StandardButton size="md" color="outline" label="Outline" />
+      </div>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <StandardButton size="lg" color="main" label="Main" />
+        <StandardButton size="lg" color="primary" label="Primary" />
+        <StandardButton size="lg" color="secondary" label="Secondary" />
+        <StandardButton size="lg" color="accent" label="Accent" />
+        <StandardButton size="lg" color="neutral" label="Neutral" />
+        <StandardButton size="lg" color="outline" label="Outline" />
+      </div>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <StandardButton size="xl" color="main" label="Main" />
+        <StandardButton size="xl" color="primary" label="Primary" />
+        <StandardButton size="xl" color="secondary" label="Secondary" />
+        <StandardButton size="xl" color="accent" label="Accent" />
+        <StandardButton size="xl" color="neutral" label="Neutral" />
+        <StandardButton size="xl" color="outline" label="Outline" />
+      </div>
+    </section>
+
+    <!-- =========================================================
+         5. LINK-KNAPPER
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Link-knapper</Heading
+      >
+
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-5">
+        <LinkButton size="sm" color="main" href="#" label="Main" />
+        <LinkButton size="sm" color="primary" href="#" label="Primary" />
+        <LinkButton size="sm" color="secondary" href="#" label="Secondary" />
+        <LinkButton size="sm" color="accent" href="#" label="Accent" />
+        <LinkButton size="sm" color="neutral" href="#" label="Neutral" />
+        <LinkButton size="sm" color="outline" href="#" label="Outline" />
+
+        <LinkButton size="md" color="main" href="#" label="Main" />
+        <LinkButton size="md" color="primary" href="#" label="Primary" />
+        <LinkButton size="md" color="secondary" href="#" label="Secondary" />
+        <LinkButton size="md" color="accent" href="#" label="Accent" />
+        <LinkButton size="md" color="neutral" href="#" label="Neutral" />
+        <LinkButton size="md" color="outline" href="#" label="Outline" />
+
+        <LinkButton size="lg" color="main" href="#" label="Main" />
+        <LinkButton size="lg" color="primary" href="#" label="Primary" />
+        <LinkButton size="lg" color="secondary" href="#" label="Secondary" />
+        <LinkButton size="lg" color="accent" href="#" label="Accent" />
+        <LinkButton size="lg" color="neutral" href="#" label="Neutral" />
+        <LinkButton size="lg" color="outline" href="#" label="Outline" />
+
+        <LinkButton size="xl" color="main" href="#" label="Main" />
+        <LinkButton size="xl" color="primary" href="#" label="Primary" />
+        <LinkButton size="xl" color="secondary" href="#" label="Secondary" />
+        <LinkButton size="xl" color="accent" href="#" label="Accent" />
+        <LinkButton size="xl" color="neutral" href="#" label="Neutral" />
+        <LinkButton size="xl" color="outline" href="#" label="Outline" />
+      </div>
+    </section>
+
+    <!-- =========================================================
+         6. STANDARD-LINKS
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Standard links</Heading
+      >
+
+      <div class="flex flex-wrap gap-4">
+        <Link href="#">Et almindeligt link</Link>
+        <Link href="#" stylingclasses="text-(--link-text-hover)"
+          >Link med ekstra styling</Link
+        >
+        <Link href="https://www.kea.dk" target="_blank" rel="noreferrer">
+          Eksternt link
+        </Link>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         7. SOCIALE LINKS
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+        >Sociale links</Heading
+      >
+
+      <div class="grid grid-cols-3 gap-4">
+        <SocialLink
+          size="sm"
+          iconSrc={FacebookIcon}
+          iconAlt="Facebook"
+          href="#"
+        />
+        <SocialLink
+          size="sm"
+          iconSrc={LinkedInIcon}
+          iconAlt="LinkedIn"
+          href="#"
+        />
+        <SocialLink
+          size="sm"
+          iconSrc={InstagramIcon}
+          iconAlt="Instagram"
+          href="#"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <SocialLink
+          size="md"
+          iconSrc={FacebookIcon}
+          iconAlt="Facebook"
+          href="#"
+        />
+        <SocialLink
+          size="md"
+          iconSrc={LinkedInIcon}
+          iconAlt="LinkedIn"
+          href="#"
+        />
+        <SocialLink
+          size="md"
+          iconSrc={InstagramIcon}
+          iconAlt="Instagram"
+          href="#"
+        />
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <SocialLink
+          size="lg"
+          iconSrc={FacebookIcon}
+          iconAlt="Facebook"
+          href="#"
+        />
+        <SocialLink
+          size="lg"
+          iconSrc={LinkedInIcon}
+          iconAlt="LinkedIn"
+          href="#"
+        />
+        <SocialLink
+          size="lg"
+          iconSrc={InstagramIcon}
+          iconAlt="Instagram"
+          href="#"
+        />
+      </div>
+
+      <!-- =========================================================
+         8. LÆS MERE
+    ========================================================= -->
+      <section class="my-4 space-y-6 bg-white p-6">
+        <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+          >Læs mere link</Heading
+        >
+
+        <div class="grid gap-6">
+          <ReadMore fullText={longText} />
+        </div>
+      </section>
+      <!-- =========================================================
+         9. BRØDKRUMME
+    ========================================================= -->
+      <section class="my-4 space-y-6 bg-white p-6">
+        <Heading htmlheading="h2" size="h4" font="display" weight="bold"
+          >Brødkrumme</Heading
+        >
+
+        <Breadcrumb trail={breadcrumbTrail} />
+      </section>
+      <!-- =========================================================
+           10. HERO-SEKTIONER
+      ========================================================= -->
+
+      <section class="my-4 space-y-12 rounded-lg bg-(--neutral-200) p-6">
+        <Heading htmlheading="h2" size="h3" font="display" weight="bold">
+          Hero Sektioner — Oversigt over alle typer
+        </Heading>
+
+        <!-- ===== HERO_1: Fullwidth with Cutout (Group start) ===== -->
+        <div class="space-y-8">
+          <Heading
+            htmlheading="h3"
+            size="h4"
+            font="sans"
+            weight="semibold"
+            stylingclasses="border-b pb-2"
+          >
+            Hero_1: Fullwidth med Cutout-grafik (3 Typer)
+          </Heading>
+        </div>
+
+        <!-- HERO_1 - Type 1: Standard Brand Hero (Grøn Accent) -->
+        <div
+          class="space-y-2 overflow-hidden rounded-md bg-white p-4 shadow-inner"
+        >
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 1 - Type 1: Standard Brand Hero (Grøn Accent)</Text
+          >
+          <Hero_1
+            titleHtml='<span class="text-(--main-400)">Mindful<br/>Dog<br/>Academy</span>'
+            subtitle="Ro, mental balance og ægte forståelse mellem dig og din firbenede ven."
+            imageSrc="https://placehold.co/600x400"
+            buttons={[
+              { label: "SE VORES HOLD", color: "secondary", href: "#" },
+            ]}
+          />
+        </div>
+
+        <!-- HERO_1 - Type 2: Med Brødkrummestile & Kontrast-titel -->
+        <div
+          class="space-y-2 overflow-hidden rounded-md bg-white p-4 shadow-inner"
+        >
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 1 - Type 2: Med Brødkrummestile & Kontrast-titel</Text
+          >
+          <Hero_1
+            breadcrumbs="FORSIDE / OM OS"
+            titleHtml='Vi træner hunden med <span class="text-(--accent-400)">Hjertet</span>'
+            subtitle="Mød teamet bag din hunds nye yndlingssted og lær mere om vores positive værdigrundlag."
+            imageSrc="https://placehold.co/600x400"
+            buttons={[
+              { label: "MØD TEAMET", color: "main", href: "#" },
+              { label: "LÆS VORES METODER", color: "outline", href: "#" },
+            ]}
+          />
+        </div>
+
+        <!-- HERO_1 - Type 3: Minimalistisk overskrift & Call to Action -->
+        <div
+          class="space-y-2 overflow-hidden rounded-md bg-white p-4 shadow-inner"
+        >
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 1 - Type 3: Minimalistisk overskrift & Kraftfuld CTA</Text
+          >
+          <Hero_1
+            titleHtml='Gør en <span class="text-(--main-400)">Forskel</span> i dag'
+            subtitle="Tilmeld dig vores nyhedsbrev og få adgang til gratis ugentlige træningstips direkte i din indbakke."
+            imageSrc="https://placehold.co/600x400"
+            buttons={[
+              { label: "TILMELD NYHEDSBREV", color: "neutral", href: "#" },
+            ]}
+          />
+        </div>
+      </section>
+      <!-- ===== HERO_1: Fullwidth with Cutout (Group end) ===== -->
+
+      <!-- ===== HERO_2: Split Layout (Group start) ===== -->
+      <div class="space-y-8">
+        <Heading
+          htmlheading="h3"
+          size="h4"
+          font="sans"
+          weight="semibold"
+          stylingclasses="border-b pb-2"
+        >
+          Hero_2: Split Layout (5 Typer)
+        </Heading>
+
+        <!-- HERO_2 - Type 1: Profil (Sabine Vejle) -->
+        <div class="space-y-2 rounded-md bg-white p-4 shadow-inner">
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 2 - Type 1: Profil (Sabine Vejle)</Text
+          >
+          <Hero_2
+            imageSrc="https://placehold.co/800x800"
+            imagePosition="left"
+            topLabel="PROFIL"
+            title="Sabine Vejle"
+            tags={[
+              "Hundeadfærd",
+              "Adfærd",
+              "Miljøtræning",
+              "Rally Lydighed",
+              "Familie Hunde Træning",
+            ]}
+            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Særlige kompetencer indenfor adfærdsbehandling og positiv forstærkning."
+            buttons={[
+              { label: "STAMBOG", color: "neutral", href: "#" },
+              { label: "TJEK VORES UDVALG", color: "secondary", href: "#" },
+              { label: "MERE OM", color: "outline", href: "#" },
+            ]}
+          />
+        </div>
+
+        <!-- HERO_2 - Type 2: Hold med Video Overlay -->
+        <div class="space-y-2 rounded-md bg-white p-4 shadow-inner">
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 2 - Type 2: Hold m/ Video Overlay</Text
+          >
+          <Hero_2
+            imageSrc="https://placehold.co/600x400"
+            topLabel="HVALPE HOLD"
+            title="Hvalpe Hold — Start den rigtige vej"
+            description="Få den bedste start på livet med din hvalp. Gennem leg, tillidsøvelser og grundlæggende miljøtræning ruster vi din hvalp til hverdagen."
+            buttons={[
+              { label: "TJEK UDVALG", color: "main", href: "#" },
+              { label: "MERE OM OS", color: "outline", href: "#" },
+            ]}
+          />
+        </div>
+
+        <!-- HERO_2 - Type 3: Spejlet Layout (højre billede) -->
+        <div class="space-y-2 rounded-md bg-white p-4 shadow-inner">
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 2 - Type 3: Spejlet Layout (Højre-stillet billede)</Text
+          >
+          <Hero_2
+            imageSrc="https://placehold.co/600x400"
+            imagePosition="right"
+            topLabel="Uddannelse"
+            title="Bliv Professionel Instruktør"
+            description="Drømmer du om at arbejde professionelt med hunde? Vores certificerede uddannelser giver dig den nyeste videnskabelige viden pakket ind i praktisk erfaring."
+            buttons={[{ label: "ANSØG NU", color: "primary", href: "#" }]}
+          />
+        </div>
+
+        <!-- HERO_2 - Type 4: Minimalistisk (ingen description) -->
+        <div class="space-y-2 rounded-md bg-white p-4 shadow-inner">
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 2 - Type 4: Minimalistisk uden beskrivelse</Text
+          >
+          <Hero_2
+            imageSrc="https://placehold.co/600x400"
+            topLabel="KONTAKT"
+            title="Har du brug for hjælp til din hund?"
+            tags={["Akut hjælp", "Enetimer"]}
+            buttons={[{ label: "SEND EN MAIL", color: "accent", href: "#" }]}
+          />
+        </div>
+
+        <!-- HERO_2 - Type 5: Enkel Service Hero -->
+        <div class="space-y-2 rounded-md bg-white p-4 shadow-inner">
+          <Text size="label_1" weight="bold" stylingclasses="text-indigo-6xl"
+            >Hero 2 - Type 5: Enkel Service Hero</Text
+          >
+          <Hero_2
+            imageSrc="https://placehold.co/600x400"
+            title="Adfærdsrådgivning på ejerens præmisser"
+            description="Når hverdagen spænder ben, og din hund udviser uønsket adfærd, står vi klar med skræddersyede planer der virker uden brug af straf."
+            buttons={[
+              { label: "BOOK TID ONLINE", color: "secondary", href: "#" },
+            ]}
+          />
+        </div>
+      </div>
+      <!-- ===== HERO_2: Split Layout (Group end) ===== -->
+    </section>
+  </div>
+</MainLayout>
