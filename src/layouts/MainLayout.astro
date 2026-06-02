@@ -12,7 +12,18 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-
+    <!-- Henter det gemte tema og sætter det på siden, før siden vises. -->
+    <script is:inline>
+      // Læser det sidst valgte tema fra browserens lager.
+      const savedTheme = localStorage.getItem("theme");
+      // Bruger kun dark hvis det faktisk er vlagt og gemt, ellers kkører den bare standart tokens og variabler
+      const theme = savedTheme === "dark" ? "dark" : "standard";
+      // Sætter data-theme på herle siden.
+      document.documentElement.dataset.theme = theme;
+      // Fortæller browseren om siden skal være som lys eller mørk.
+      document.documentElement.style.colorScheme =
+        theme === "dark" ? "dark" : "light";
+    </script>
     <title>{title}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -16,6 +16,7 @@ import LinkButton from "../components/Buttons__&_links/LinkButton.astro";
 import SocialLink from "../components/Buttons__&_links/SocialLink.astro";
 import ReadMore from "../components/Buttons__&_links/ReadMore.astro";
 import Breadcrumb from "../components/Buttons__&_links/Breadcrumb.astro";
+import ThemeButton from "../components/Buttons__&_links/Themebutton.astro";
 import Hero_1 from "../components/HeroMain.astro";
 import Hero_2 from "../components/HeroSecond.astro";
 import FacebookIcon from "../assets/icon/Facebook_Logo_Dark.svg";
@@ -686,6 +687,17 @@ const weightVariants = ["bold", "semibold", "regular", "light"] as const;
         </div>
       </div>
       <!-- ===== HERO_2: Split Layout (Group end) ===== -->
+    </section>
+
+    <!-- =========================================================
+         9. TEMA-KNAP
+    ========================================================= -->
+    <section class="my-4 space-y-6 bg-white p-6">
+      <Heading htmlheading="h2" size="h4" font="display" weight="bold">
+        Tema-knap
+      </Heading>
+
+      <ThemeButton />
     </section>
   </div>
 </MainLayout>
