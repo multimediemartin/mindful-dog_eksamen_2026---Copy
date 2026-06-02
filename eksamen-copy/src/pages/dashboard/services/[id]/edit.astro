@@ -1,0 +1,122 @@
+---
+import { createServerClient } from "../../../../lib/supabaseClient";
+import { Picture } from "astro:assets";
+
+const supabase = createServerClient();
+const { data } = await supabase.from("services").select(
+  `
+    *,
+    traenere ( * ),
+    ikoner ( * )
+  `,
+);
+---
+
+<html lang="da">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overblik</title>
+
+  <body>
+    <section>
+      <div class="ul-box">
+        <ul>
+          {
+            data?.map((item) => {
+              const t = item.traenere;
+              return (
+                <div class="li-box">
+                  <li>
+                    <div class="box-1">
+                      <div>
+                        <p class="txt">
+                          {t?.fornavn} {t?.efternavn}
+                        </p>
+                      </div>
+                      <p class="txt">{t?.lokation}</p>
+
+                      <div>
+                        <p class="txt">
+                          {t?.adresse_1} {t?.postnummer_1} {t?.bynavn_1}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p class="txt">
+                          {t?.postnummer_2} {t?.adresse_2} {t?.bynavn_2}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p class="txt">
+                          {t?.traener_mail} {t?.traener_tlf}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p class="txt">
+                          {t?.fornavn_2} {t?.efternavn_2}
+                        </p>
+                      </div>
+                    </div>
+                  </li>
+                  <p>{t?.traener_info}</p>
+                  <div>
+                    <p class="txt">{t?.traener_slug}</p>
+                  </div>
+                  <li>
+                    <div>
+                      <p>{t?.testimonial_1}</p>
+                      <p>{t?.testimonial_2}</p>
+                      <p>{t?.testimonial_3}</p>
+                    </div>
+                  </li>
+                </div>
+              );
+            })
+          }
+        </ul>
+      </div>
+    </section>
+  </body>
+
+  <style>
+    ul {
+      display: grid;
+      grid-template-columns: repeat(1fr 3fr);
+      gap: 2.5rem;
+      list-style: none;
+      max-width: 80vw;
+      margin: 0 auto;
+    }
+
+    .li-box {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.5rem;
+      padding: 1rem;
+      border-bottom: 1px solid #191618;
+    }
+
+    .box-1 {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .txt {
+      width: fit-content;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.875rem;
+      color: #191618;
+      border: 1px solid #191618;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin: 4px 0;
+    }
+
+    .txt:empty {
+      display: none;
+      border: none;
+    }
+  </style>
+</html>
