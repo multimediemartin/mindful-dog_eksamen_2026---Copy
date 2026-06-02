@@ -1,15 +1,17 @@
 ---
 import Logo from "../assets/icon/logoSnude.svg";
+import SearchButton from "../components/Buttons__&_links/SearchButton.astro";
+import ThemeButton from "../components/Buttons__&_links/Themebutton.astro";
 ---
 
 <header class="border-b-2 border-(--accent-300) bg-(--neutral-100)">
   <nav
-    class="m-auto mt-0 mb-8 flex w-[95cqw] grid-cols-5 items-center justify-between gap-4 p-4 text-center font-sans font-semibold md:grid"
+    class="m-auto mt-0 flex w-[95cqw] items-center gap-4 px-4 py-4 text-center font-sans font-semibold md:grid md:grid-cols-[auto_minmax(0,1fr)_auto] md:items-center md:gap-x-8 md:gap-y-4"
   >
     <a href="/" class="h-auto w-fit"><Logo class="aspect-square h-18 w-18" /></a
     >
     <ul
-      class="menu first hidden list-none gap-8 md:col-span-3 md:flex md:justify-between [&_li]:relative [&_li]:my-4 [&_li]:block [&_li]:text-2xl [&_li]:text-(--neutral-500) [&_li]:no-underline [&_li]:transition-colors [&_li]:duration-150 [&_li]:hover:text-(--accent-200) [&_li]:md:mx-auto [&_li]:md:text-base [&_li]:lg:my-0 [&_li]:lg:text-xl"
+      class="menu first [&_li]:lg:text-text-size-20 [&_li]:text-text-size-16 [&_li]:md:text-text-size-18 [&_li]:xl:text-text-size-25 hidden list-none gap-8 md:flex md:justify-center md:gap-8 md:justify-self-center [&_li]:relative [&_li]:my-4 [&_li]:block [&_li]:text-(--neutral-500) [&_li]:no-underline [&_li]:transition-colors [&_li]:duration-150 [&_li]:hover:text-(--accent-200) [&_li]:md:mx-auto [&_li]:lg:my-0"
     >
       <li>
         <a href="/">FORSIDE</a>
@@ -23,19 +25,34 @@ import Logo from "../assets/icon/logoSnude.svg";
       <li>
         <a href="/Kontakt">KONTAKT</a>
       </li>
+      <li>
+        <a
+          href="/Bliv_instruktoer"
+          class="rounded-md bg-(--neutral-500) px-2 py-1 text-2xl whitespace-nowrap text-(--neutral-200) no-underline transition-colors duration-150 hover:bg-(--accent-200) md:text-base lg:text-xl"
+          >BLIV INSTRUKTØR</a
+        >
+      </li>
     </ul>
-    <div class="menu second hidden md:block md:justify-self-end">
-      <a
-        href="/Bliv_instruktoer"
-        class="rounded-md bg-(--neutral-500) px-2 py-1 text-2xl whitespace-nowrap text-(--neutral-200) no-underline transition-colors duration-150 hover:bg-(--accent-200) md:place-self-end md:text-right md:text-base lg:text-xl"
-        >BLIV INSTRUKTØR</a
-      >
+    <div
+      class="menu second hidden md:flex md:items-center md:gap-6 md:justify-self-end md:whitespace-nowrap"
+    >
+      <div class="inline-flex items-center gap-4">
+        <ThemeButton />
+        <SearchButton
+          size="sm"
+          closedIconClass="text-(--neutral-500)"
+          closedIconHoverClass="group-hover:text-(--main-500)"
+          openIconClass="text-(--neutral-100)"
+          openIconHoverClass="group-hover:text-(--neutral-200)"
+        />
+      </div>
     </div>
+    <!-- ny kode slut -->
     <span class="menu mbg md:hidden"></span>
     <span class="menu mline md:hidden"></span>
     <div
       id="burger"
-      class="rounded-5 relative z-10 mr-2 h-10 w-10 cursor-pointer md:hidden [&_span]:relative [&_span]:my-1.5 [&_span]:block [&_span]:h-1.5 [&_span]:w-full [&_span]:rounded-sm [&_span]:bg-(--neutral-500)"
+      class="rounded-5 relative z-10 ml-auto h-10 w-10 shrink-0 cursor-pointer md:hidden [&_span]:relative [&_span]:my-1.5 [&_span]:block [&_span]:h-1.5 [&_span]:w-full [&_span]:rounded-sm [&_span]:bg-(--neutral-500)"
     >
       <span></span>
       <span></span>
