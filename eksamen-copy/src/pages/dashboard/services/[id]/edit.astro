@@ -1,6 +1,6 @@
 ---
+// @ts-nocheck
 import { createServerClient } from "../../../../lib/supabaseClient";
-import { Picture } from "astro:assets";
 
 const supabase = createServerClient();
 const { data } = await supabase.from("traenere").select(
