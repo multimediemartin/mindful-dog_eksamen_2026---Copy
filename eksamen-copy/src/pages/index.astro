@@ -1,0 +1,107 @@
+---
+import { createServerClient } from "../lib/supabaseClient";
+import { Picture } from "astro:assets";
+
+const supabase = createServerClient();
+const { data } = await supabase.from("services").select(
+  `
+    *,
+    traenere ( * ),
+    ikoner ( * )
+  `,
+);
+---
+
+<html lang="da">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traenere</title>
+
+  <body>
+    <section>
+      <ul>
+        {
+          data?.map((item) => {
+            const t = item.traenere;
+            return <li>{t?.fornavn}</li>;
+          })
+        }
+      </ul>
+      <ul
+        style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; flex-wrap: wrap;"
+      >
+        {
+          data?.map((item) => {
+            const t = item.traenere;
+            return (
+              <li style="list-style: none; border-radius: 8px; overflow: hidden;">
+                <div style="display: grid; gap: 8px; border-radius: 8px;background-color: #f7f7f7;">
+                  <Picture
+                    src={item.produkt_img}
+                    alt={item.lokation}
+                    style="
+             width: 100%;
+             height: auto;
+                aspect-ratio: 3 / 2;
+                object-fit: cover;
+                object-position: 20% 0%;"
+                    inferSize={true}
+                    decoding="async"
+                    quality="mid"
+                    format="webp"
+                    loading="lazy"
+                    width={1536}
+                    height={1920}
+                  />
+                  <div style="display: grid; gap: 16px; margin:16px 16px;">
+                    <div style="display: flex; gap: 8px; height: fit-content;">
+                      <h6
+                        style="margin:0; font-size: 0.75rem; font-weight: 700; color: #f7f7f7; font-family: Arial, Helvetica, sans-serif;
+                      border-radius: 8px; padding: 4px 8px; background-color: #191618;"
+                      >
+                        {item.lokation}
+                      </h6>
+                      <h6
+                        style="margin:0; font-size: 0.75rem; font-weight: 700; color: #191618; font-family: Arial, Helvetica, sans-serif;
+                      border-radius: 8px; padding: 4px 8px; background-color: #e6e6e6;"
+                      >
+                        {item.type}
+                      </h6>
+                      <h6
+                        style="margin:0; font-size: 0.75rem; font-weight: 700; color: #191618; font-family: Arial, Helvetica, sans-serif;
+                      border-radius: 8px; padding: 4px 8px; background-color: #e6e6e6;"
+                      >
+                        {t.fornavn}
+                      </h6>
+                    </div>
+                    <div>
+                      <h4 style="margin:0; font-size: .9rem; font-weight: 800; color: #191618; font-family: Arial, Helvetica, sans-serif;">
+                        {item?.hold}
+                      </h4>
+                      <p style="margin:0; font-size: 0.875rem; color: #191618; font-family: Arial, Helvetica, sans-serif; max-width: 35ch;">
+                        {item?.hold_beskrivelse}
+                      </p>
+                    </div>
+                    <div style="display: flex; gap: 16px; align-items: center; justify-content: space-between;">
+                      <p style="font-size: 1.2rem; font-weight: 800; font-family: Arial, Helvetica, sans-serif;">
+                        {item?.pris},00 DKK
+                      </p>
+                      <a
+                        href=""
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style="font-size: 0.875rem; font-weight: 700; color: #191618; font-family: Arial, Helvetica, sans-serif; border: 1px solid #191618; border-radius: 8px; padding: 8px 16px; text-decoration: none;"
+                      >
+                        SE MERE
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+  </body>
+</html>

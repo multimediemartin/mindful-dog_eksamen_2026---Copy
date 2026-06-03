@@ -1,3 +1,6 @@
+import { defineConfig } from "astro/config";
+import node from "@astrojs/node";
+
 // Prettier configuration
 /** @type {import("prettier").Config} */
 export default {
@@ -10,4 +13,8 @@ export default {
       },
     },
   ],
+  output: "server",
+  adapter: node({
+    mode: "standalone",
+  }),
 };
