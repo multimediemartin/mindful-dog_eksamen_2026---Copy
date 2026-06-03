@@ -1,25 +1,428 @@
 ---
-import MainLayout from "../layouts/MainLayout.astro";
-import Button from "../components/Buttons__&_links/Button.astro";
-import Heading from "../components/Heading.astro";
-import Link from "../components/Buttons__&_links/Link.astro";
-import Text from "../components/Text.astro";
+// =========================================================================
+// 1. SYSTEM IMPORTS: Komponenter fra designsystemet
+// =========================================================================
+import MainLayout from "../layouts/MainLayout.astro"; // Sørger for den globale sidestruktur (header, footer, meta-tags)
+import Heading from "../components/Heading.astro"; // Genanvendelig overskriftskomponent (h1-h6) med ensartet styling
+import Text from "../components/Text.astro"; // Genanvendelig brødtekstkomponent til labels og afsnit
+import Button from "../components/Buttons__&_links/Button.astro"; // Standard knap-komponent til klikbare handlinger
+import LinkButton from "../components/Buttons__&_links/LinkButton.astro"; // Knap-komponent, der fungerer som et reelt HTML-link (<a>)
+import HeroMain from "../components/HeroMain.astro"; // Sidens primære introduktions-sektion med billede og titel
+import Question from "../components/quiz_question.astro"; // Specialkomponent til de enkelte quiz-spørgsmål
+
+// =========================================================================
+// 2. DATA IMPORTS: Grafikressourcer og Database API
+// =========================================================================
+import HeroImage from "../assets/img/EKSAMEN_EDIT-1270314.webp"; // Hovedbilledet til hero-sektionen
+import { getAllData } from "../assets/js/supabase_v2"; // Henter asynkront alle hold- og servicedata fra Supabase-databasen
+
+// Her kalder vi databasen med det samme på server-side, så listen er klar, når siden loader
+const allServices = await getAllData();
+
+// =========================================================================
+// 3. CONFIGURATION: Statisk indhold til Hero-sektionen
+// =========================================================================
+const heroMain = {
+  titleHtml: "Quiz: Hvilket Hold?",
+  subtitle:
+    "I tvivl om hvilket hold, der er det rigtig valg for dig og din hund?",
+  imageSrc: HeroImage,
+  imageClass: "transform scale-x-[-1]", // Spejlvender billedet vandret af designhensyn
+  buttons: [{ label: "START QUIZ", color: "secondary", href: "#quiz_start" }], // Knap der scroller direkte ned til første spørgsmål
+};
+
+// =========================================================================
+// 4. QUIZ DATA: Spørgsmålsstruktur, felter og svarmuligheder
+// =========================================================================
+// Arrayet definerer de 4 trin i quizzen. "fieldName" matcher nøglerne i vores klientside-tilstand (quizState).
+const questions = [
+  {
+    questionNumber: 1,
+    question: "Hvor Gammel Er Din Hund?",
+    options: [
+      { label: "12 UGER - 10 MDR", value: "puppy" },
+      { label: "10 MDR - 6 ÅR", value: "adult" },
+      { label: "+ 6 ÅR", value: "senior" },
+    ],
+    buttonColor: "primary",
+    fieldName: "dogAge", // Gemmes i quizState.dogAge
+  },
+  {
+    questionNumber: 2,
+    question: "Hvad Vil Du Gerne Træne Med Din Hund?",
+    options: [
+      { label: "SPECIFIKKE ADFÆRDS PROBLEMER", value: "behavior" },
+      { label: "GENERELLE TRÆNINGSØVELSER", value: "general" },
+      { label: "GÅ PÆNT", value: "walking" },
+      { label: "FINDE RO", value: "calm" },
+    ],
+    buttonColor: "secondary",
+    fieldName: "trainingGoal", // Gemmes i quizState.trainingGoal
+  },
+  {
+    questionNumber: 3,
+    question: "Hvilken Træningsform Er Du Interesseret I?",
+    options: [
+      { label: "HOLD TRÆNING", value: "group" },
+      { label: "ENE UNDERVISNING", value: "private" },
+    ],
+    buttonColor: "primary",
+    fieldName: "trainingType", // Gemmes i quizState.trainingType
+  },
+  {
+    questionNumber: 4,
+    question: "Hvilken Lokation Passer Dig Bedst?",
+    options: [
+      { label: "VESTSJÆLLAND", value: "Vestsjælland" },
+      { label: "ALS", value: "Als" },
+      { label: "SØNDERJYLLAND", value: "Sønderjylland" },
+      { label: "IKAST", value: "Ikast" },
+      { label: "VEJEN", value: "Vejen" },
+      { label: "SVENDBORG", value: "Svendborg" },
+    ],
+    buttonColor: "secondary",
+    fieldName: "lokation", // Gemmes i quizState.lokation
+  },
+] as const; // "as const" sikrer TypeScript-type-strictness, så værdierne forbliver uændrede
 ---
 
 <MainLayout title="Quiz">
-  <article>
-    <Heading
-      htmlheading="h1"
-      size="h2"
-      font="display"
-      weight="bold"
-      stylingclasses="mb-6 !text-size-30"
+  <!-- =========================================================================
+       SEKTION 1: HERO OVERBLIK
+       Viser introduktionen til quizzen og lader brugeren klikke sig i gang.
+       ========================================================================= -->
+  <section class="px-8 py-16 md:py-24">
+    <HeroMain {...heroMain as any} />
+  </section>
+
+  <!-- =========================================================================
+       ALPINE.JS RUNTIME: Styrer quiz-state, reaktiv filtrering og feedback globalt.
+       Alle underliggende sektioner har adgang til disse data og funktioner.
+       ========================================================================= -->
+  <div
+    x-data={`{
+      // quizState holder styr på brugerens valgte svar løbende. Starter som 'null' (tomme).
+      quizState: {
+        dogAge: null,
+        trainingGoal: null,
+        trainingType: null,
+        lokation: null
+      },
+      
+      // Indsætter databaseresultaterne fra serveren direkte som et JavaScript-objekt i browseren
+      allServices: ${JSON.stringify(allServices)},
+      
+      // Holder styr på, om brugeren har klikket på Ja/Nej i bunden af siden
+      feedbackGiven: false,
+
+      // Computed property: Returnerer sandt (true), når brugeren har svaret på ALLE 4 spørgsmål
+      get isComplete() {
+        return this.quizState.dogAge &&
+               this.quizState.trainingGoal &&
+               this.quizState.trainingType &&
+               this.quizState.lokation;
+      },
+
+      // Computed property: Filtrerer og returnerer holdene dynamisk baseret på brugerens svar
+      get filteredResults() {
+        if (!this.isComplete) return []; // Vis intet, før quizzen er færdiggjort
+        let results = [...this.allServices];
+
+        // 1. Lokations-filtrering: Tager højde for de geografiske samlinger/undtagelser fra dit setup
+        if (this.quizState.lokation) {
+          const target = this.quizState.lokation;
+          results = results.filter(service => {
+            if (service.lokation === target) return true;
+            if (target === 'Sønderjylland' && service.lokation === 'Skærbæk') return true;
+            if (target === 'Vejen' && service.lokation === 'Sydjylland') return true;
+            return false;
+          });
+        }
+
+        // 2. Træningstype-filtrering: Sorterer mellem Enetimer (Privat) og Holdtræning
+        if (this.quizState.trainingType === 'private') {
+          results = results.filter(s => ['individuel', 'hjemmevurdering'].includes(s.type?.toLowerCase()));
+        } else if (this.quizState.trainingType === 'group') {
+          results = results.filter(s => s.type?.toLowerCase().includes('træningshold'));
+        }
+
+        // Returnerer maksimalt de første 8 matchende resultater for at bevare et flot grid
+        return results.slice(0, 8);
+      },
+
+      // Nulstiller hele quizzens tilstand og scroller brugeren blødt tilbage til start
+      resetQuiz() {
+        this.quizState = { dogAge: null, trainingGoal: null, trainingType: null, lokation: null };
+        document.querySelector('#quiz_start')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }`}
+  >
+    <!-- =========================================================================
+         SEKTION 2: SPØRGSMÅL 1 (Hundens Alder)
+         Altid synlig, da det er startpunktet.
+         ========================================================================= -->
+    <section
+      id="quiz_start"
+      class="bg-(--main-200) px-(--page-space-inline) py-(--section-space-y)"
     >
-      Quiz
-    </Heading>
-    <Button>Klik!</Button>
-    <Text stylingclasses="mt-4 !text-size-16">
-      Link til <Link href="https://www.kea.dk">En anden side</Link>
-    </Text>
-  </article>
+      <Question {...questions[0]} bgColor="main" />
+    </section>
+
+    <!-- =========================================================================
+         SEKTION 3: SPØRGSMÅL 2 (Træningsmål)
+         Vises kun (x-show), når der er afgivet et svar på spørgsmål 1.
+         ========================================================================= -->
+    <section
+      class="bg-(--accent-100) px-(--page-space-inline) py-(--section-space-y)"
+      x-show="quizState.dogAge !== null"
+      x-transition
+    >
+      <Question {...questions[1]} bgColor="accent" />
+    </section>
+
+    <!-- =========================================================================
+         SEKTION 4: SPØRGSMÅL 3 (Træningsform)
+         Vises kun (x-show), når der er afgivet et svar på spørgsmål 2.
+         ========================================================================= -->
+    <section
+      class="bg-(--main-200) px-(--page-space-inline) py-(--section-space-y)"
+      x-show="quizState.trainingGoal !== null"
+      x-transition
+    >
+      <Question {...questions[2]} bgColor="main" />
+    </section>
+
+    <!-- =========================================================================
+         SEKTION 5: SPØRGSMÅL 4 (Lokation)
+         Vises kun (x-show), når der er afgivet et svar på spørgsmål 3.
+         ========================================================================= -->
+    <section
+      class="bg-(--accent-100) px-(--page-space-inline) py-(--section-space-y)"
+      x-show="quizState.trainingType !== null"
+      x-transition
+    >
+      <Question {...questions[3]} bgColor="accent" />
+    </section>
+
+    <!-- =========================================================================
+         SEKTION 6: QUIZ RESULTATER (ProductCard Gridvisning)
+         Træder i kraft med en flydende animation (x-transition), når isComplete er sand.
+         ========================================================================= -->
+    <section
+      class="bg-(--main-100) px-(--page-space-inline) py-(--section-space-y)"
+      x-show="isComplete"
+      x-transition
+    >
+      <div class="mx-auto max-w-[1400px]">
+        <!-- Overskriftsområde for resultater -->
+        <div class="mb-12 text-center">
+          <Text
+            size="label_1"
+            weight="semibold"
+            stylingclasses="text-(--main-400) mb-2 tracking-widest"
+          >
+            DINE RESULTATER
+          </Text>
+          <Heading
+            htmlheading="h2"
+            size="h3"
+            font="display"
+            weight="bold"
+            stylingclasses="text-(--text-primary) mb-4"
+          >
+            Vi Anbefaler Disse Hold Til Dig
+          </Heading>
+        </div>
+
+        <!-- LISTEVISNING: Hvis databasen returnerer et eller flere match -->
+        <div x-show="filteredResults.length > 0">
+          <!-- Responsivt grid, der spejler opsætningen fra din holdoversigt (sm: 2 kolonner, xl: 3 kolonner, 2xl: 4 kolonner) -->
+          <ul
+            class="grid auto-rows-auto gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+          >
+            <!-- Alpine-skabelon løkke: Genererer et ProductCard per matchende hold i listen -->
+            <template x-for="service in filteredResults" :key="service.id">
+              <li class="row-span-3 mx-auto grid w-full grid-rows-subgrid">
+                <!-- Hele kortet linker direkte ind til det specifikke holds underside baseret på dets unikke slug -->
+                <a :href="'/Hold_side/' + service.slug" class="block w-full">
+                  <!-- Selve kort-strukturen hentet direkte fra dit ProductCard design -->
+                  <article
+                    class="row-span-2 grid h-full grid-rows-subgrid overflow-hidden rounded-md bg-(--neutral-100) shadow-sm xl:max-w-100"
+                  >
+                    <!-- Kortbillede hentet dynamisk fra databasen. Falder tilbage til placeholder hvis intet findes -->
+                    <img
+                      :src="service.produkt_img || 'https://placehold.co/600x400'"
+                      :alt="service.type"
+                      class="aspect-3/2 h-auto w-[100cqw] object-cover object-[0%_20%]"
+                    />
+
+                    <!-- Kortindhold container -->
+                    <div class="flex flex-col p-[2cqw] pt-2">
+                      <!-- Badges/Labels række: Lokation, type og trænere -->
+                      <div
+                        class="flex min-h-8 flex-wrap gap-2 [&_span]:my-2 [&_span]:content-center [&_span]:py-1"
+                      >
+                        <!-- Lokations badge (Skjules automatisk hvis feltet er tomt) -->
+                        <span x-show="service.lokation">
+                          <p
+                            class="text-size-12 rounded-md bg-(--neutral-500) px-2 py-0.5 font-sans font-semibold text-(--text-inverse)"
+                            x-text="service.lokation"
+                          >
+                          </p>
+                        </span>
+
+                        <!-- Holdtype badge -->
+                        <span x-show="service.type">
+                          <p
+                            class="text-size-12 rounded-md bg-(--neutral-200) px-2 py-0.5 font-sans font-semibold"
+                            x-text="service.type"
+                          >
+                          </p>
+                        </span>
+
+                        <!-- Træner badge: Sammensætter fornavn 1 og eventuelt fornavn 2 med et '&' symbol imellem -->
+                        <span
+                          class="w-fit content-center"
+                          x-show="service.traenere?.fornavn || service.traener?.fornavn"
+                        >
+                          <p
+                            class="text-size-12 rounded-md bg-(--neutral-200) px-2 py-0.5 font-sans font-semibold"
+                            x-text="(service.traenere?.fornavn || service.traener?.fornavn || '') + (service.traenere?.fornavn_2 ? ' & ' + service.traenere.fornavn_2 : '')"
+                          >
+                          </p>
+                        </span>
+                      </div>
+
+                      <!-- Sektion for holdnavn og den uddybende tekstbeskrivelse -->
+                      <div class="mb-4">
+                        <!-- line-clamp-2 og line-clamp-3 sikrer at lange tekster skæres pænt af, så kortene forbliver ensartede i højden -->
+                        <h6
+                          class="font-display text-size-18 line-clamp-2 font-bold text-(--text-main)"
+                          x-text="service.hold"
+                        >
+                        </h6>
+                        <p
+                          class="text-size-14 mt-2 line-clamp-3 font-sans text-(--text-secondary)"
+                          x-text="service.hold_beskrivelse || ''"
+                        >
+                        </p>
+                      </div>
+
+                      <!-- Kortets bund: Pris-formatering og visuel knap -->
+                      <div
+                        class="mt-auto mb-4 flex items-center justify-between pt-2"
+                      >
+                        <!-- Intl.NumberFormat sikrer en flot, lokaliseret dansk valuta-visning (f.eks. 1.250,00 DKK) -->
+                        <span
+                          class="text-size-16 font-sans font-bold text-(--text-main)"
+                          x-text="new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK', currencyDisplay: 'code' }).format(Number(service.pris))"
+                        ></span>
+
+                        <!-- Knap, der matcher LinkButton designet fra dit ProductCard -->
+                        <span
+                          class="text-size-14 rounded-md border-2 border-(--neutral-500) bg-transparent px-4 py-2 font-semibold text-(--text-main) transition-colors duration-150 group-hover:bg-(--neutral-200)"
+                        >
+                          SE MERE
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                </a>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <!-- FEJLVISNING: Hvis der ikke findes hold i databasen, der matcher kombinationen -->
+        <div
+          x-show="filteredResults.length === 0"
+          class="rounded-md py-12 text-center"
+        >
+          <Text stylingclasses="mb-4"
+            >Der blev desværre ikke fundet nogen hold, der matcher præcis disse
+            kriterier.</Text
+          >
+        </div>
+
+        <!-- Globale kontrolknapper placeret centreret under hold-kortene -->
+        <div
+          class="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row"
+        >
+          <!-- Ved klik kaldes resetQuiz() metoden defineret i x-data -->
+          <div @click="resetQuiz()">
+            <Button color="outline" size="lg" type="button">
+              TAG QUIZZEN IGEN
+            </Button>
+          </div>
+          <LinkButton
+            href="/Hold_oversigt"
+            color="primary"
+            size="lg"
+            label="SE ALLE HOLD"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         SEKTION 7: USER FEEDBACK (Fandt du hvad du ledte efter?)
+         Placeret allerøverst i bunden, og skifter tilstand reaktivt via Alpine.js.
+         ========================================================================= -->
+    <section
+      class="bg-(--main-100) px-(--page-space-inline) py-(--section-space-y)"
+    >
+      <!-- Min-h-24 sikrer, at sektionen ikke "hopper" visuelt i højden, når teksten skifter efter klik -->
+      <div
+        class="mx-auto flex min-h-24 max-w-100 flex-col items-center justify-center text-center"
+      >
+        <!-- Standardvisning: Vises så længe feedbackGiven er falsk (false) -->
+        <div
+          x-show="!feedbackGiven"
+          class="flex flex-col items-center gap-4"
+          x-transition
+        >
+          <Heading
+            htmlheading="h5"
+            size="h6"
+            font="display"
+            weight="semibold"
+            stylingclasses="text-(--text-primary)"
+          >
+            Fandt du hvad du ledte efter?
+          </Heading>
+          <div class="flex gap-4">
+            <!-- Ved klik på enten JA eller NEJ sættes feedbackGiven til true, hvilket trigger skiftet -->
+            <button
+              @click="feedbackGiven = true"
+              type="button"
+              class="text-size-14 cursor-pointer rounded-md bg-(--main-400) px-6 py-2.5 font-semibold tracking-wide text-(--text-inverse) transition-colors duration-150 hover:bg-(--main-500)"
+            >
+              JA
+            </button>
+            <button
+              @click="feedbackGiven = true"
+              type="button"
+              class="text-size-14 cursor-pointer rounded-md border-2 border-(--neutral-500) bg-transparent px-6 py-2 font-semibold tracking-wide text-(--text-main) transition-colors duration-150 hover:bg-(--neutral-200)"
+            >
+              NEJ
+            </button>
+          </div>
+        </div>
+
+        <!-- Taksigelsesvisning: Vises automatisk i stedet for knapperne, når feedbackGiven bliver sand (true) -->
+        <div x-show="feedbackGiven" x-transition class="text-center">
+          <Text weight="semibold" stylingclasses="text-(--main-400) ">
+            Tak for din feedback! Det hjælper os med at gøre siden bedre.
+          </Text>
+        </div>
+      </div>
+    </section>
+  </div>
 </MainLayout>
+
+<!-- Gør scroll-adfærden glidende på tværs af hele dokumentet, når der hoppes mellem spørgsmålene -->
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

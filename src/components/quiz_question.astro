@@ -1,0 +1,90 @@
+---
+import Heading from "./Heading.astro";
+import Text from "./Text.astro";
+import Button from "./Buttons__&_links/Button.astro";
+
+interface Props {
+  questionNumber: number;
+  question: string;
+  options:
+    | readonly { label: string; value: string }[]
+    | { label: string; value: string }[];
+  bgColor?: "main" | "accent";
+  buttonColor?: "primary" | "secondary" | "main" | "accent" | "outline";
+  fieldName: string;
+}
+
+const {
+  questionNumber,
+  question,
+  options,
+  bgColor = "main",
+  buttonColor = "primary",
+  fieldName,
+} = Astro.props;
+
+const labelColor =
+  bgColor === "main" ? "text-(--main-400)" : "text-(--accent-400)";
+---
+
+<div
+  class="flex w-full items-center justify-center"
+  x-data={`{
+    selectAnswer(value) {
+      quizState.${fieldName} = value;
+      setTimeout(() => {
+        const currentSection = this.$el.closest('section');
+        const nextSection = currentSection?.nextElementSibling;
+        if (nextSection) {
+          nextSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 300);
+    }
+  }`}
+>
+  <div
+    class="flex w-full max-w-300 flex-col items-center gap-8 md:gap-10 lg:gap-12"
+  >
+    <div class="flex w-full flex-col items-center gap-3 text-center md:gap-4">
+      <Text
+        size="label_1"
+        weight="semibold"
+        stylingclasses={`tracking-[2.4px] ${labelColor}`}
+      >
+        SPØRGSMÅL #{questionNumber}
+      </Text>
+
+      <Heading
+        htmlheading="h2"
+        size="h4"
+        font="display"
+        weight="bold"
+        stylingclasses="text-(--text-primary) max-w-[800px] px-4"
+      >
+        {question}
+      </Heading>
+    </div>
+
+    <div
+      class="flex w-full max-w-75 flex-col gap-4 md:max-w-125 md:gap-5 lg:max-w-150"
+    >
+      {
+        options.map((option) => (
+          <div
+            class="w-full cursor-pointer"
+            @click={`selectAnswer('${option.value}')`}
+          >
+            <Button
+              color={buttonColor}
+              size="xl"
+              stylingclasses="w-full"
+              type="button"
+            >
+              {option.label}
+            </Button>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</div>
